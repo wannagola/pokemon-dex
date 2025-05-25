@@ -1,26 +1,42 @@
-import React, { createContext, useContext, useState } from "react";
+// src/context/PokemonContext.jsx
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
-// 1. 컨텍스트 객체 생성
+const STORAGE_KEY = "my-pokemon-dex-selected";
 const PokemonContext = createContext();
 
-// 2. Provider 컴포넌트
 export function PokemonProvider({ children }) {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(() => {
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(selected));
+    } catch {}
+  }, [selected]);
 
   const addPokemon = (pokemon) => {
     if (selected.some((p) => p.id === pokemon.id)) {
-      alert("이미 선택된 포켓몬입니다.");
+      toast.error("이미 선택된 포켓몬입니다.");
       return;
     }
     if (selected.length >= 6) {
-      alert("더 이상 선택할 수 없습니다.");
+      toast.error("더 이상 선택할 수 없습니다.");
       return;
     }
     setSelected((prev) => [...prev, pokemon]);
+    toast.success(`${pokemon.korean_name} 추가되었습니다!`);
   };
 
   const removePokemon = (id) => {
     setSelected((prev) => prev.filter((p) => p.id !== id));
+    toast.success("포켓몬이 삭제되었습니다.");
   };
 
   return (
@@ -30,7 +46,6 @@ export function PokemonProvider({ children }) {
   );
 }
 
-// 3. 커스텀 훅
 export function usePokemon() {
   return useContext(PokemonContext);
 }
