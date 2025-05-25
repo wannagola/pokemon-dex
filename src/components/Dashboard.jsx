@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { usePokemon } from "../context/PokemonContext";
+import { useSelector, useDispatch } from "react-redux";
+import { removePokemon } from "../features/pokemonSlice";
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
@@ -38,7 +39,8 @@ const RemoveButton = styled.button`
 `;
 
 export default function Dashboard() {
-  const { selected, removePokemon } = usePokemon();
+  const selected = useSelector((state) => state.pokemon.selected);
+  const dispatch = useDispatch();
 
   return (
     <Wrapper>
@@ -49,7 +51,7 @@ export default function Dashboard() {
           <Card key={p.id}>
             <Thumbnail src={p.img_url} alt={p.korean_name} />
             <p>{p.korean_name}</p>
-            <RemoveButton onClick={() => removePokemon(p.id)}>
+            <RemoveButton onClick={() => dispatch(removePokemon(p.id))}>
               삭제
             </RemoveButton>
           </Card>

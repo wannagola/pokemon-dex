@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { MOCK_DATA } from "../mock.js";
 import PokemonCard from "./PokemonCard";
-import { usePokemon } from "../context/PokemonContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addPokemon } from "../features/pokemonSlice";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -11,7 +12,8 @@ const ListWrapper = styled.div`
 `;
 
 export default function PokemonList() {
-  const { selected, addPokemon } = usePokemon();
+  const selected = useSelector((state) => state.pokemon.selected);
+  const dispatch = useDispatch();
 
   return (
     <section>
@@ -22,7 +24,7 @@ export default function PokemonList() {
             key={p.id}
             pokemon={p}
             selected={selected}
-            onAdd={() => addPokemon(p)}
+            onAdd={() => dispatch(addPokemon(p))}
           />
         ))}
       </ListWrapper>
