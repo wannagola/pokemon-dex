@@ -1,0 +1,18 @@
+@font-face {
+  font-family: "Jalnan2";
+  src: url("./fonts/Jalnan2.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Jalnan2", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333333;
+}
