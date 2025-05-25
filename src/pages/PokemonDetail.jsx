@@ -1,83 +1,85 @@
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPokemon, removePokemon } from "../features/pokemonSlice";
 import { MOCK_DATA } from "../mock.js";
 
-const Wrapper = styled.div`
-  padding: 24px;
-`;
-
-const Img = styled.img`
-  width: 200px;
-  display: block;
-  margin-bottom: 16px;
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
 `;
 
 const Title = styled.h1`
-  margin-bottom: 8px;
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
 `;
 
-const Types = styled.p`
-  margin-bottom: 16px;
+const Image = styled.img`
+  width: 200px;
+  height: auto;
+  margin-bottom: 1rem;
 `;
 
-const Desc = styled.p`
-  margin-bottom: 24px;
+const Description = styled.p`
+  margin-bottom: 1.5rem; /* 설명과 버튼 사이 여유 */
 `;
 
 const ButtonGroup = styled.div`
-  display: flex;
-  gap: 12px;
+  display: inline-flex;
+  gap: 1rem;            /* 버튼 간격 */
+  margin-bottom: 1rem;  /* 버튼 그룹과 뒤로가기 사이 여유 */
 `;
 
 const ActionButton = styled.button`
-  padding: 8px 16px;
+  padding: 0.6rem 1.2rem;
+  background: ${(props) => (props.selected ? "#e74c3c" : "#3498db")};
   border: none;
-  background: ${(props) => (props.remove ? "#e00" : "#0070f3")};
+  border-radius: 6px;
   color: white;
-  border-radius: 4px;
   cursor: pointer;
+`;
 
-  &:hover {
-    background: ${(props) => (props.remove ? "#c00" : "#005bb5")};
-  }
+const BackButton = styled.button`
+  padding: 0.5rem 1rem;
+  background: #95a5a6;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
 `;
 
 export default function PokemonDetail() {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const selected = useSelector((state) => state.pokemon.selected);
+
   const id = Number(searchParams.get("id"));
   const pokemon = MOCK_DATA.find((p) => p.id === id);
-
-  const selected = useSelector((state) => state.pokemon.selected);
-  const dispatch = useDispatch();
   const isSelected = selected.some((p) => p.id === id);
 
-  if (!pokemon) return <Wrapper>존재하지 않는 포켓몬입니다.</Wrapper>;
+  const handleClick = () => {
+    if (isSelected) dispatch(removePokemon(id));
+    else dispatch(addPokemon(pokemon));
+  };
 
   return (
-    <Wrapper>
+    <Container>
       <Title>{pokemon.korean_name}</Title>
-      <Img src={pokemon.img_url} alt={pokemon.korean_name} />
-      <Types>타입: {pokemon.types.join(", ")}</Types>
-      <Desc>{pokemon.description}</Desc>
+      <Image src={pokemon.img_url} alt={pokemon.korean_name} />
+
+      <Description>타입: {pokemon.types.join(", ")}</Description>
+      <Description>{pokemon.description}</Description>
+
       <ButtonGroup>
-        {!isSelected ? (
-          <ActionButton onClick={() => dispatch(addPokemon(pokemon))}>
-            추가
-          </ActionButton>
-        ) : (
-          <ActionButton
-            remove
-            onClick={() => dispatch(removePokemon(id))}
-          >
-            삭제
-          </ActionButton>
-        )}
-        <ActionButton onClick={() => navigate(-1)}>뒤로 가기</ActionButton>
+        <ActionButton selected={isSelected} onClick={handleClick}>
+          {isSelected ? "삭제" : "추가"}
+        </ActionButton>
+        <BackButton onClick={() => navigate(-1)}>뒤로 가기</BackButton>
       </ButtonGroup>
-    </Wrapper>
+    </Container>
   );
 }

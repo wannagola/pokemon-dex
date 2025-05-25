@@ -4,56 +4,54 @@ import { useSelector, useDispatch } from "react-redux";
 import { removePokemon } from "../features/pokemonSlice";
 
 const Wrapper = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
 `;
 
 const Grid = styled.div`
   display: flex;
-  gap: 12px;
+  justify-content: center; /* 가로 중앙 정렬 */
   flex-wrap: wrap;
-  align-items: center;
+  gap: 1.5rem;
 `;
 
 const Card = styled.div`
   text-align: center;
 `;
 
-const Thumbnail = styled.img`
-  width: 60px;
+const Thumb = styled.img`
+  width: 64px;
   height: auto;
   display: block;
-  margin: 0 auto 4px;
+  margin: 0 auto 0.5rem;
 `;
 
-const RemoveButton = styled.button`
-  padding: 4px 8px;
+const Name = styled.div`
+  margin-bottom: 0.5rem;
+`;
+
+const Button = styled.button`
+  padding: 0.4rem 0.8rem;
+  background: #e74c3c;
+  color: white;
   border: none;
   border-radius: 4px;
-  background: #e00;
-  color: white;
   cursor: pointer;
-
-  &:hover {
-    background: #c00;
-  }
 `;
 
 export default function Dashboard() {
-  const selected = useSelector((state) => state.pokemon.selected);
   const dispatch = useDispatch();
+  const selected = useSelector((state) => state.pokemon.selected);
 
   return (
     <Wrapper>
-      <h2>선택된 포켓몬</h2>
       <Grid>
-        {selected.length === 0 && <p>선택된 포켓몬이 없습니다.</p>}
         {selected.map((p) => (
           <Card key={p.id}>
-            <Thumbnail src={p.img_url} alt={p.korean_name} />
-            <p>{p.korean_name}</p>
-            <RemoveButton onClick={() => dispatch(removePokemon(p.id))}>
+            <Thumb src={p.img_url} alt={p.korean_name} />
+            <Name>{p.korean_name}</Name>
+            <Button onClick={() => dispatch(removePokemon(p.id))}>
               삭제
-            </RemoveButton>
+            </Button>
           </Card>
         ))}
       </Grid>
