@@ -40,22 +40,9 @@ const AddButton = styled.button`
   }
 `;
 
-export default function PokemonCard({ pokemon, selected, setSelected }) {
-  const handleAdd = () => {
-    if (selected.some((p) => p.id === pokemon.id)) {
-      alert("이미 선택된 포켓몬입니다.");
-      return;
-    }
-    if (selected.length >= 6) {
-      alert("더 이상 선택할 수 없습니다.");
-      return;
-    }
-    setSelected([...selected, pokemon]);
-  };
-
+export default function PokemonCard({ pokemon, selected, onAdd }) {
   return (
     <Card>
-      {/* 카드 클릭 시 상세페이지로 이동 */}
       <Link
         to={`/detail?id=${pokemon.id}`}
         style={{ textDecoration: "none", color: "inherit" }}
@@ -64,7 +51,7 @@ export default function PokemonCard({ pokemon, selected, setSelected }) {
         <Name>{pokemon.korean_name}</Name>
       </Link>
       <Type>타입: {pokemon.types.join(", ")}</Type>
-      <AddButton onClick={handleAdd}>추가</AddButton>
+      <AddButton onClick={onAdd}>추가</AddButton>
     </Card>
   );
 }

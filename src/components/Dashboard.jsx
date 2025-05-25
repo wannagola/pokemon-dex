@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { usePokemon } from "../context/PokemonContext";
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
@@ -36,10 +37,8 @@ const RemoveButton = styled.button`
   }
 `;
 
-export default function Dashboard({ selected, setSelected }) {
-  const handleRemove = (id) => {
-    setSelected(selected.filter((p) => p.id !== id));
-  };
+export default function Dashboard() {
+  const { selected, removePokemon } = usePokemon();
 
   return (
     <Wrapper>
@@ -50,7 +49,7 @@ export default function Dashboard({ selected, setSelected }) {
           <Card key={p.id}>
             <Thumbnail src={p.img_url} alt={p.korean_name} />
             <p>{p.korean_name}</p>
-            <RemoveButton onClick={() => handleRemove(p.id)}>
+            <RemoveButton onClick={() => removePokemon(p.id)}>
               삭제
             </RemoveButton>
           </Card>
