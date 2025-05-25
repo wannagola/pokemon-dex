@@ -24,13 +24,13 @@ const Image = styled.img`
 `;
 
 const Description = styled.p`
-  margin-bottom: 1.5rem; /* 설명과 버튼 사이 여유 */
+  margin-bottom: 1.5rem; 
 `;
 
 const ButtonGroup = styled.div`
   display: inline-flex;
-  gap: 1rem;            /* 버튼 간격 */
-  margin-bottom: 1rem;  /* 버튼 그룹과 뒤로가기 사이 여유 */
+  gap: 1rem;           
+  margin-bottom: 1rem;  
 `;
 
 const ActionButton = styled.button`

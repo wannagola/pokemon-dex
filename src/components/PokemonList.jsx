@@ -9,7 +9,7 @@ const ListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
   gap: 1.5rem;
-  justify-items: center; /* 카드들을 가운데정렬 */
+  justify-items: center; 
   margin-bottom: 2rem;
 `;
 

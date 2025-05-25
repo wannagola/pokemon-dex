@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 
 const Grid = styled.div`
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
   flex-wrap: wrap;
   gap: 1.5rem;
 `;
