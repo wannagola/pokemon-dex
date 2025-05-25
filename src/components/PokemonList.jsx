@@ -1,31 +1,18 @@
-import React from "react";
-import styled from "styled-components";
-import { MOCK_DATA } from "../mock.js";
-import PokemonCard from "./PokemonCard";
-import { usePokemon } from "../context/PokemonContext";
+import React from 'react';
+import PokemonCard from './PokemonCard';
+import { MOCK_DATA } from '../mock.js';
 
-const ListWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-`;
-
-export default function PokemonList() {
-  const { selected, addPokemon } = usePokemon();
-
+export default function PokemonList({ selected, addPokemon }) {
   return (
-    <section>
-      <h2>포켓몬 리스트</h2>
-      <ListWrapper>
-        {MOCK_DATA.map((p) => (
-          <PokemonCard
-            key={p.id}
-            pokemon={p}
-            selected={selected}
-            onAdd={() => addPokemon(p)}
-          />
-        ))}
-      </ListWrapper>
-    </section>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+      {MOCK_DATA.map((p) => (
+        <PokemonCard
+          key={p.id}
+          pokemon={p}
+          isSelected={!!selected.find((x) => x.id === p.id)}
+          onAdd={() => addPokemon(p)}
+        />
+      ))}
+    </div>
   );
 }
